@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Meme/Thread Generator Pack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Inter, sans-serif; background:#0b0f14; color:#e6edf3; padding:24px; }
+    textarea { width:100%; height:100px; background:#0b1220; color:#e6edf3; border:1px solid #1f2937; border-radius:10px; padding:12px; }
+    button { margin-top:12px; background:#1e40af; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; }
+    .row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:16px; }
+    .card { background:#0b1220; border:1px solid #1f2937; border-radius:10px; padding:12px; }
+  </style>
+</head>
+<body>
+  <h2>⚡ Meme/Thread Generator</h2>
+  <p>Drop a base line → get 3 Hinglish variants ready for X/Discord.</p>
+  <textarea id="base" placeholder="e.g., Gensyn isn’t a product, it’s a pulse."></textarea>
+  <button id="gen">Generate Variants</button>
+
+  <div class="row" id="out"></div>
+
+  <script>
+    const presets = [
+      (t)=> `Pulse > product. ${t} • Roz thoda, hafte bhar bahut.`,
+      (t)=> `Not chasing points, chasing presence. ${t} • Pioneers > metrics.`,
+      (t)=> `Aaj vibe build karo, kal culture chalega. ${t} • Help > Hype.`
+    ];
+    document.getElementById('gen').onclick = () => {
+      const base = document.getElementById('base').value.trim() || 'Gensyn = community-first protocol.';
+      const out = document.getElementById('out');
+      out.innerHTML = '';
+      presets.forEach((fn)=>{
+        const text = fn(base);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<p>${text}</p><button>Copy</button>`;
+        card.querySelector('button').onclick = async () => {
+          await navigator.clipboard.writeText(text);
+          card.querySelector('button').textContent = 'Copied!';
+          setTimeout(()=> card.querySelector('button').textContent = 'Copy', 1200);
+        };
+        out.appendChild(card);
+      });
+    };
+  </script>
+</body>
+</html>
